@@ -105,7 +105,7 @@ def get_polynimial_set(X, degree = 12, bias = True):
     else:
         return X_mat[:,1:]
 
-def plot_boundaries(X_train, y_train, score=None, probability_func=None, degree = None, n_colors = 100, mesh_res = 1000, ax = None):
+def plot_boundaries(X_train, y_train, score=None, probability_func=None, degree = None, n_colors = 100, mesh_res = 1000, ax = None, titulo=None):
     X = X_train #np.vstack((X_test, X_train))
     margin_x = (X[:, 0].max() - X[:, 0].min())*0.05
     margin_y = (X[:, 1].max() - X[:, 1].min())*0.05
@@ -150,6 +150,8 @@ def plot_boundaries(X_train, y_train, score=None, probability_func=None, degree 
     # Plot also the training points
     ax.scatter(X_train[:, 0], X_train[:, 1], c=y_train, cmap=cm_bright,
                edgecolors='k', s=100, marker='o')
+    if titulo is not None:
+        ax.set_title(titulo)
     
 
 def fit_and_get_regions(X_train, y_train, X_test, y_test, degree = 2, lambd = 0, plot_it = True, print_it = False):
@@ -181,8 +183,8 @@ def fit_and_get_regions(X_train, y_train, X_test, y_test, degree = 2, lambd = 0,
     # print('intercept:', clf_logist_pol.intercept_)
     if plot_it:
         f, (ax1, ax2) = plt.subplots(1, 2, figsize=(20,6))
-        plot_boundaries(X_train, y_train, score_train_logist_pol, clf_logist_pol.predict_proba, degree=degree, ax=ax1)
-        plot_boundaries(X_test, y_test, score_test_logist_pol, clf_logist_pol.predict_proba, degree=degree, ax=ax2)
+        plot_boundaries(X_train, y_train, score_train_logist_pol, clf_logist_pol.predict_proba, degree=degree, ax=ax1, titulo='TRAIN')
+        plot_boundaries(X_test, y_test, score_test_logist_pol, clf_logist_pol.predict_proba, degree=degree, ax=ax2, titulo='TEST')
         print('Regresion Logistica Polinomial de orden '+str(degree) +', con lamdba (regularización L2):' +  str(lambd))
         plt.show()
     if print_it:
